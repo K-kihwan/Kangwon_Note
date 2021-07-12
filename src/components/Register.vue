@@ -1,22 +1,43 @@
 <template>
-  <div class="inputBox">
-    <h1>회원가입</h1>
-    <form @submit="onSubmit">
-      <i class="fas fa-envelope"></i> &nbsp;
-      <input type="text" v-model="email"><br />
+  <v-container class="fill-height" style="max-width: 360px">
+    <v-layout class="align-center" row wrap>
+      <v-flex xs12>
+        <h1>회원가입</h1>
+        <v-text-field
+            v-model="email"
+            label="이메일"
+        ></v-text-field>
 
-      <i class="pwd fas fa-lock"></i> &nbsp;
-      <input type="password" v-model="password"><br />
+        <v-text-field
+            v-model="password"
+            type="password"
+            label="비밀번호"
+        ></v-text-field>
 
-      <i class="pwd fas fa-lock"></i> &nbsp;
-      <input type="password" placeholder="비밀 번호와 동일하게 입력 해주세요." v-model="chkpassword"><br />
+        <v-text-field
+            v-model="chkpassword"
+            type="password"
+            label="비밀번호 확인"
+        ></v-text-field>
 
-      <i class="user fas fa-user"></i> &nbsp;
-      <input type="text" v-model="nickName"><br />
-
-      <button type="submit">등록</button><br />
-    </form>
-  </div>
+        <v-text-field
+            class = "mb-10"
+            v-model="nickName"
+            label="닉네임"
+        ></v-text-field>
+        <v-btn
+            block
+            class = "white--text"
+            depressed
+            large
+            color = "blue-grey darken-2"
+            @click="onSubmit"
+        >
+          등록
+        </v-btn>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -32,7 +53,7 @@ export default {
 
   methods:{
     onSubmit(){
-      if(this.email || this.password || this.nickName || this.chkpassword != 0)
+      if(this.email && this.password && this.nickName && this.chkpassword != 0)
       {
         if(this.password != this.chkpassword)
         {
@@ -63,33 +84,10 @@ export default {
 
 <style scoped>
 h1{
+  text-align: center;
   font-size: 50px;
   font-weight: 900;
   margin-bottom: 5rem;
-}
-
-.inputBox input{
-  text-align: center;
-  height: 50px;
-  width: 230px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border-style: none;
-}
-
-.inputBox chk{
-
-}
-
-button{
-  box-shadow: none;
-  font-size: 12pt;
-  height: 50px;
-  width : 100px;
-  background-color: gray;
-  color : white;
-  margin-top: 15px;
-  border-radius: 5px;
 }
 
 </style>
