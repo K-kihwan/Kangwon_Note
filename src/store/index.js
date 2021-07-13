@@ -23,6 +23,10 @@ export default new Vuex.Store({
             state.isLogin = false
             state.isLoginError = true
 
+        },
+        logout(state){
+            state.isLogin = false
+            state.isLoginError = false
         }
     },
     actions: {
@@ -50,6 +54,13 @@ export default new Vuex.Store({
             }
             else
                 commit("loginError")
+        },
+
+        logout({commit}){
+            commit('logout')
+            router.push({
+                name:'Login'
+            })
         }
     },
     getters: {

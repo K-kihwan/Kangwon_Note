@@ -9,13 +9,7 @@
         >
           아이디와 비밀번호를 확인 해주세요.
         </v-alert>
-<!--        <v-alert
-            class = "mb-3"
-            :value="isLogin"
-            type="success"
-        >
-          로그인이 완료되었습니다.
-        </v-alert>-->
+
         <h1>문서작성 (임시)</h1>
         <v-text-field
             v-model="email"
@@ -50,6 +44,7 @@
         >
           회원가입
         </v-btn>
+
       </v-flex>
     </v-layout>
   </v-container>
