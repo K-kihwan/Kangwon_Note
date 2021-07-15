@@ -4,13 +4,15 @@ import Login from '@/components/Login'
 import Register from "@/components/Register";
 import mainPage from "@/components/mainPage";
 import store from "../store"
+import ComposeScreen from "@/components/ComposeScreen";
+
 Vue.use(Router)
 
 const alreadyLogin = (to, from, next) => {
     if(store.state.isLogin === true)
     {
         alert("로그인이 된 상태입니다.")
-        next("/mainPage")
+        next("/ComposeScreen")
     }
     else
         next()
@@ -44,6 +46,12 @@ export default new Router({
             name: 'mainPage',
             beforeEnter: notLogin,
             component: mainPage
+        },
+
+        {
+            path: '/ComposeScreen',
+            name: 'ComposeScreen',
+            component: ComposeScreen
         }
     ]
 })

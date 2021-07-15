@@ -47,7 +47,7 @@ export default new Vuex.Store({
                     {
                         commit("loginSuccess")
                         router.push({
-                            name:'mainPage'
+                            name:'ComposeScreen'
                         })
                     }
                 }
