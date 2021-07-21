@@ -41,7 +41,7 @@ export default {
 
 #left {
   left: 10px; right: 52%;
-  border: 3px solid black;
+  border: 2px solid black;
   border-radius: 20px;
 }
 

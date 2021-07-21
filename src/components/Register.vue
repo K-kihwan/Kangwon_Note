@@ -2,6 +2,22 @@
   <v-container class="fill-height" style="max-width: 360px">
     <v-layout class="align-center" row wrap>
       <v-flex xs12>
+        <v-alert
+            class = "mb-3"
+            :value="isRegError"
+            type="error"
+        >
+          회원가입 창을 확인해주세요.
+        </v-alert>
+
+        <v-alert
+            class = "mb-3"
+            :value="isNotMatchPwd"
+            type="error"
+        >
+          비밀번호와 비밀번호 확인이 다릅니다.
+        </v-alert>
+
         <h1>회원가입</h1>
         <v-text-field
             v-model="email"
@@ -22,7 +38,7 @@
 
         <v-text-field
             class = "mb-10"
-            v-model="nickName"
+            v-model="nickname"
             label="닉네임"
         ></v-text-field>
         <v-btn
@@ -31,7 +47,7 @@
             depressed
             large
             color = "blue-grey darken-2"
-            @click="onSubmit"
+            @click="register({email, password, nickname})"
         >
           등록
         </v-btn>
@@ -41,6 +57,8 @@
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex'
+
 export default {
   name: "Register",
 
@@ -48,36 +66,15 @@ export default {
     email: '',
     password: '',
     chkpassword: '',
-    nickName:''
+    nickname:''
   }),
 
+  computed:{
+    ...mapState(["isRegError", "isNotMatchPwd"])
+  },
+
   methods:{
-    onSubmit(){
-      if(this.email && this.password && this.nickName && this.chkpassword != 0)
-      {
-        if(this.password != this.chkpassword)
-        {
-          alert("비밀 번호가 일치하지 않습니다.")
-        }
-        else
-        {
-          console.log(this.email)
-          console.log(this.password)
-          console.log(this.nickName)
-          alert("회원가입이 완료 되었습니다.")
-          this.goToLogin()
-        }
-      }
-      else
-      {
-        alert("창을 모두 채워 주세요.")
-      }
-    },
-    goToLogin(){
-      this.$router.push({
-        name:'Login'
-      })
-    }
+    ...mapActions(["register"])
   }
 }
 </script>

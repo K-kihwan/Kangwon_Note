@@ -44,7 +44,16 @@
         >
           회원가입
         </v-btn>
-
+<!--test버튼        <v-btn
+            block
+            class = "white&#45;&#45;text"
+            depressed
+            large
+            color = "blue-grey darken-2"
+            @click="test"
+        >
+          test
+        </v-btn>-->
       </v-flex>
     </v-layout>
   </v-container>
@@ -67,7 +76,7 @@ export default {
   },
 
   methods:{
-    ...mapActions(["login"]),
+    ...mapActions(["login", "test"]),
 
     goToRegister(){
       this.$router.push({

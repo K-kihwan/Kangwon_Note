@@ -1,16 +1,17 @@
 import Vue from "vue";
 import Vuex from 'vuex'
 import router from '../router'
+import axios from "axios";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        allUsers:[
-            {id  : 1, email: "aa@gmail.com", password : "1234", nickName : "AAA"}
-        ],
         isLogin : false,
-        isLoginError: false
+        isLoginError: false,
+        isRegister: false,
+        isRegError : false,
+        isNotMatchPwd: false
     },
 
     mutations: {
@@ -27,33 +28,38 @@ export default new Vuex.Store({
         logout(state){
             state.isLogin = false
             state.isLoginError = false
+        },
+
+        registerError(state){
+            state.isRegError = true
+            state.isRegister = false
+        },
+
+        registerNotMatch(state){
+            state.isNotMatchPwd = true
+            state.isRegister = false
+        },
+
+        registerSuccess(state){
+            state.isRegister = true
+            state.isRegError = false
         }
     },
     actions: {
-        login({state, commit}, text){
-            let selectedUser = null
-            if(text.email && text.password != 0)
-            {
-                state.allUsers.forEach(user=>{
-                    if(user.email === text.email)
-                        selectedUser = user
+        login({commit}, text){
+            axios
+                .post("http://localhost:3000/auth/signin", text)
+                .then(res=>{
+                    console.log(res)
+                    commit("loginSuccess")
+                    router.push({
+                        name:'ComposeScreen'
+                    })
                 })
-                if(selectedUser === null)
+                .catch(err=>{
+                    console.log(err)
                     commit("loginError")
-                else{
-                    if(selectedUser.password !== text.password)
-                        commit("loginError")
-                    else
-                    {
-                        commit("loginSuccess")
-                        router.push({
-                            name:'ComposeScreen'
-                        })
-                    }
-                }
-            }
-            else
-                commit("loginError")
+                })
         },
 
         logout({commit}){
@@ -61,6 +67,40 @@ export default new Vuex.Store({
             router.push({
                 name:'Login'
             })
+        },
+
+        register({commit}, text){
+            /*if(text.password != text.chkpassword)
+            {
+                commit("registerNotMatch")
+                return false
+            }*/
+
+            axios
+                .post("http://localhost:3000/auth/signup", text)
+                .then(res=>{
+                    console.log(res)
+                    commit('registerSuccess')
+                    alert("회원가입을 성공했습니다.")
+                    router.push({
+                        name:'Login'
+                    })
+
+                })
+                .catch(err=>{
+                    console.log(err)
+                    commit("registerError")
+                })
+        },
+
+        test(){
+            axios.get("http://localhost:3000/hello")
+                .then(res=>{
+                    console.log(res)
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
         }
     },
     getters: {
