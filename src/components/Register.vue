@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" style="max-width: 360px">
+  <v-container class="fill-height" style="max-width: 450px">
     <v-layout class="align-center" row wrap>
       <v-flex xs12>
         <v-alert
@@ -7,7 +7,7 @@
             :value="isRegError"
             type="error"
         >
-          회원가입 창을 확인해주세요.
+          입력하신 정보를 확인해주세요.
         </v-alert>
 
         <v-alert
@@ -22,24 +22,28 @@
         <v-text-field
             v-model="email"
             label="이메일"
+            placeholder="이메일을 입력해주세요."
         ></v-text-field>
 
         <v-text-field
             v-model="password"
             type="password"
             label="비밀번호"
+            placeholder="영 대소문자, 특수문자가 포함되어야 합니다. (8~32글자 사이)"
         ></v-text-field>
 
         <v-text-field
             v-model="chkpassword"
             type="password"
             label="비밀번호 확인"
+            placeholder="비밀번호와 동일하게 입력해주세요."
         ></v-text-field>
 
         <v-text-field
             class = "mb-10"
             v-model="nickname"
             label="닉네임"
+            placeholder="닉네임은 2~20글자 사이어야 합니다."
         ></v-text-field>
         <v-btn
             block

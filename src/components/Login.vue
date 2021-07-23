@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" style="max-width: 360px">
+  <v-container class="fill-height" style="max-width: 450px">
     <v-layout class="align-center" row wrap>
       <v-flex xs12>
         <v-alert
@@ -36,7 +36,7 @@
 
         <v-btn
             block
-            class = "white--text"
+            class = "white--text mb-3"
             depressed
             large
             color = "blue-grey darken-2"
@@ -44,16 +44,16 @@
         >
           회원가입
         </v-btn>
-<!--test버튼        <v-btn
+        <v-btn
             block
-            class = "white&#45;&#45;text"
+            class = "white--text mb-3"
             depressed
             large
             color = "blue-grey darken-2"
             @click="test"
         >
           test
-        </v-btn>-->
+        </v-btn>
       </v-flex>
     </v-layout>
   </v-container>

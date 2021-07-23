@@ -6,6 +6,7 @@ import axios from "axios";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+
     state: {
         isLogin : false,
         isLoginError: false,
@@ -70,10 +71,9 @@ export default new Vuex.Store({
         },
 
         register({commit}, text){
-            /*if(text.password != text.chkpassword)
+            /*if(text.password !== text.chkpassword)
             {
                 commit("registerNotMatch")
-                return false
             }*/
 
             axios
@@ -94,13 +94,16 @@ export default new Vuex.Store({
         },
 
         test(){
-            axios.get("http://localhost:3000/hello")
+            router.push({
+                name:'ComposeScreen'
+            })
+            /*axios.get("http://localhost:3000/hello")
                 .then(res=>{
                     console.log(res)
                 })
                 .catch(err=>{
                     console.log(err)
-                })
+                })*/
         }
     },
     getters: {
