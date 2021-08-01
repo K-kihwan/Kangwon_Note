@@ -11,8 +11,7 @@ export default new Vuex.Store({
         isLogin : false,
         isLoginError: false,
         isRegister: false,
-        isRegError : false,
-        isNotMatchPwd: false
+        isRegError : false
     },
 
     mutations: {
@@ -33,11 +32,6 @@ export default new Vuex.Store({
 
         registerError(state){
             state.isRegError = true
-            state.isRegister = false
-        },
-
-        registerNotMatch(state){
-            state.isNotMatchPwd = true
             state.isRegister = false
         },
 
@@ -71,11 +65,6 @@ export default new Vuex.Store({
         },
 
         register({commit}, text){
-            /*if(text.password !== text.chkpassword)
-            {
-                commit("registerNotMatch")
-            }*/
-
             axios
                 .post("http://localhost:3000/auth/signup", text)
                 .then(res=>{

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" style="max-width: 450px">
+  <v-container class="fill-height" style="max-width: 400px">
     <v-layout class="align-center" row wrap>
       <v-flex xs12>
         <v-alert
@@ -12,8 +12,10 @@
 
         <h1>문서작성 (임시)</h1>
         <v-text-field
+            class = "mb-3"
             v-model="email"
             label="이메일"
+            @keydown.enter.prevent="login({email, password})"
         ></v-text-field>
 
         <v-text-field
@@ -21,6 +23,7 @@
             v-model="password"
             type="password"
             label="비밀번호"
+            @keydown.enter.prevent="login({email, password})"
         ></v-text-field>
 
         <v-btn
