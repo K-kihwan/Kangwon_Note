@@ -38,7 +38,7 @@
       <template v-slot:item="{ item }">
         <tr>
           <td align="start">{{item.number}}</td>
-          <td class="nameTable" @click="openDm(item)">{{item.name}}</td>
+          <td class="nameTable" @click="openDm(item)" :title="item.name">{{item.name}}</td>
           <td>{{item.date}}</td>
           <td>
             <v-icon
@@ -52,25 +52,13 @@
       </template>
     </v-data-table>
 
-    <v-expand-transition>
-      <v-card
-          shaped
-          elevation="5"
-          outlined
-          v-if="showDm"
-          class="transition-fast-in-fast-out pa-3 cardDm"
-      >
-        <v-card-title>
-          <span class="dmName text-h5">{{dmItem.name}}</span>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="closeDm">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-text class="black--text py-5 px-10 text-body-1">
-          <span>{{dmItem.contents}}</span>
-        </v-card-text>
-      </v-card>
+    <v-expand-transition v-if="showDm">
+      <document-card
+          class="cardDm transition-fast-in-fast-out"
+          :name="dmItem.name"
+          :contents="dmItem.contents"
+          @close="closeDm()"
+      />
     </v-expand-transition>
 
     <v-btn id="add" class = "white--text" color = "blue-grey darken-2" @click="upload()">문서추가</v-btn>
@@ -92,8 +80,12 @@
 </template>
 
 <script>
+import DocumentCard from "@/components/DocumentCard"
 export default {
   name: "DocumentList",
+  components: {
+    DocumentCard
+  },
   data() {
     return {
       search: '',
@@ -223,7 +215,7 @@ export default {
     },
     closeDm() {
       this.showDm = false
-    }
+    },
   }
 }
 </script>
@@ -246,12 +238,6 @@ export default {
   width: 90%; height: 74vh;
   left: 50%; top: 50%;
   margin-left: -45%; margin-top: -37vh;
-}
-.dmName{
-  max-width: 70%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 #add{
   position: absolute;
