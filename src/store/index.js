@@ -8,10 +8,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         userInfo: null,
+        userId: null,
         isLogin : false,
         isLoginError: false,
         isRegister: false,
-        isRegError : false
+        isRegError : false,
+        chk : false
     },
 
     mutations: {
@@ -38,16 +40,26 @@ export default new Vuex.Store({
         registerSuccess(state){
             state.isRegister = true
             state.isRegError = false
+        },
+        chksave(state){
+            state.chk = true
+        },
+        chksave_fail(state){
+            state.chk = false
         }
     },
+
     actions: {
-        login({commit, dispatch}, text){
+        login({commit}, text){
             axios
                 .post("http://localhost:3000/auth/signin", text)
                 .then(res=>{
-                    let token = res.data.token
+                    /*let token = res.data.token
                     localStorage.setItem("access_token", token)
-                    dispatch("memberCheck")
+                    dispatch("memberCheck")*/
+                    let userId = res.data.id
+                    localStorage.setItem("uid", userId)
+
                     console.log(res)
                     commit("loginSuccess")
                     router.push({
@@ -107,7 +119,6 @@ export default new Vuex.Store({
 
         logout({commit}){
             commit('logout')
-            localStorage.removeItem("access_token")
             alert("로그아웃 되었습니다.")
             router.push({
                 name:'Login'
@@ -129,6 +140,31 @@ export default new Vuex.Store({
                 .catch(err=>{
                     console.log(err)
                     commit("registerError")
+                })
+        },
+
+        documentSave({commit}, text){
+            let uid = localStorage.getItem("uid")
+            let order = 1
+            let config = {
+                headers:{
+                    "userId" : uid,
+                    "noteName" : text.noteName,
+                    "content" : text.content,
+                    "order" : order
+                }
+            }
+            axios
+                .post("http://localhost:3000/note", config)
+                .then(res=>{
+                    console.log(res)
+                    commit('chksave')
+                    alert("저장 완료 되었습니다.")
+                })
+                .catch(err=>{
+                    console.log(err)
+                    commit('chksave_fail')
+                    alert("저장 실패했습니다.")
                 })
         },
 

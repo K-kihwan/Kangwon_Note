@@ -52,6 +52,7 @@
     </v-flex>
     <v-flex >
       <v-textarea
+          v-model="content"
           height=66vh
           counter
           label="작성화면"
@@ -72,12 +73,12 @@
         <v-card>
           <v-card-title class="text-h5">문서저장</v-card-title>
           <v-card-text>
-            <v-text-field placeholder="제목을 입력하세요"/>
+            <v-text-field v-model="noteName" placeholder="제목을 입력하세요"/>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="closeSave">취소</v-btn>
-            <v-btn color="blue darken-1" text>저장</v-btn>
+            <v-btn color="blue darken-1" text @click="documentSave({noteName, content})">저장</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
@@ -87,10 +88,14 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   name: "DocumentList",
   data() {
     return {
+      content:'',
+      noteName:'',
       show: false,
       dialogSave: false,
       sentences: [
@@ -126,33 +131,24 @@ export default {
       ]
     }
   },
+
   watch: {
     dialogSave (val) {
       val || this.closeDelete()
     }
   },
+
   methods: {
+    ...mapActions(["documentSave"]),
+
     sentenceShow() {
       this.show = !this.show;
     },
-    fnAddProc() {
-      this.form = {
-        board_code: this.board_code,
-        subject: this.subject,
-        cont: this.cont,
-        id: this.id
-      }
-      this.$axios.post('',this.form).then((res)=>{
-        if(res.data.success) {
-          alert('클라우드에 저장 했습니다.');
-        } else {
-          alert('클라우드 저장에 실패했습니다.');
-        }
-      })
-    },
+
     save() {
       this.dialogSave = true
     },
+
     closeSave() {
       this.dialogSave = false
     }
