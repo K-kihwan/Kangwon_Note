@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from 'vuex'
 import router from '../router'
 import axios from "axios";
-import createPersistedState from "vuex-persistedstate";
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -20,7 +20,6 @@ export default new Vuex.Store({
         loginSuccess(state){
             state.isLogin = true
             state.isLoginError = false
-
         },
         loginError(state){
             state.isLogin = false
@@ -54,10 +53,10 @@ export default new Vuex.Store({
             axios
                 .post("http://localhost:3000/auth/signin", text)
                 .then(res=>{
-                    /*let token = res.data.token
-                    localStorage.setItem("access_token", token)
-                    dispatch("memberCheck")*/
-                    let userId = res.data.id
+                    /*let token = res.data.accessToken
+                    localStorage.setItem("access_token", token)*/
+
+                    let userId = res.data.user.id
                     localStorage.setItem("uid", userId)
 
                     console.log(res)
@@ -74,13 +73,14 @@ export default new Vuex.Store({
 
         /*memberCheck({commit}){
             let token = localStorage.getItem("access_token")
+            let uid = localStorage.getItem("uid")
             let config = {
                 headers:{
                     "access-token" : token
                 }
             }
             axios
-                .get("http://localhost:3000/auth/1", config)
+                .get(`http://localhost:3000/auth/${uid}`, config)
                 .then(response =>{
                     let userInfo = {
                         id: response.data.data.id,
@@ -145,14 +145,12 @@ export default new Vuex.Store({
 
         documentSave({commit}, text){
             let uid = localStorage.getItem("uid")
-            let order = 1
+            let order = "1"
             let config = {
-                headers:{
-                    "userId" : uid,
-                    "noteName" : text.noteName,
-                    "content" : text.content,
-                    "order" : order
-                }
+                "userId" : uid,
+                "noteName" : text.noteName,
+                "content" : text.content,
+                "order" : order
             }
             axios
                 .post("http://localhost:3000/note", config)
@@ -184,5 +182,5 @@ export default new Vuex.Store({
     getters: {
 
     },
-    plugins: [createPersistedState()]
+
 })
