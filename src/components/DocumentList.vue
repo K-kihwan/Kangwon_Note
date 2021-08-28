@@ -1,5 +1,6 @@
 <template>
-  <v-sheet rounded="xl" color="white" min-height="90vh">
+  <v-sheet class="fill-height" rounded="xl" color="white">
+    <!--문서 목록 테이블-->
     <v-data-table
         :headers="headers"
         :items="items"
@@ -7,12 +8,13 @@
         sort-by="number"
         class="elevation-6 rounded-xl"
         hide-default-footer
-        style="height: 90vh"
+        style="height: 90vh; "
     >
       <template v-slot:top>
         <v-toolbar flat color="#9E9E9E" class="white--text">
           <v-toolbar-title>문서목록</v-toolbar-title>
           <v-spacer></v-spacer>
+          <!--검색 기능-->
           <v-text-field
               color="white"
               v-model="search"
@@ -22,6 +24,8 @@
               hide-details
               dark
           ></v-text-field>
+
+          <!--문서 삭제 dialog-->
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="text-h5">목록에서 지우시겠습니까?</v-card-title>
@@ -35,39 +39,54 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template v-slot:item="{ item }">
-        <tr>
-          <td align="start">{{item.number}}</td>
-          <td class="nameTable" @click="openDm(item)" :title="item.name">{{item.name}}</td>
-          <td>{{item.date}}</td>
-          <td>
-            <v-icon
-                small
-                @click="deleteItem(item)"
-            >
-              mdi-delete
-            </v-icon>
-          </td>
-        </tr>
+
+      <!--문서 이름 항목 / 누르면 문서 표시(DocumentCard) / 툴팁 적용-->
+      <template v-slot:item.name="{ item }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <span class="d-inline-block text-truncate" v-on="on" @click="openDm(item)" :title="item.name"
+                  style="cursor: pointer; max-width: 20vw">
+              {{ item.name }}
+            </span>
+          </template>
+          <!--툴팁으로 표시될 내용-->
+          <span>{{ item.name }}</span>
+        </v-tooltip>
+      </template>
+
+      <!--문서 삭제 아이콘 / 누르면 deleteDialog 표시-->
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+            small
+            @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
       </template>
     </v-data-table>
 
+    <!--문서 표시(애니메이션)-->
     <v-expand-transition v-if="showDm">
       <document-card
-          class="cardDm transition-fast-in-fast-out"
+          class="cardDm transition-fast-in-fast-out fill-height"
           :name="dmItem.name"
           :contents="dmItem.contents"
           @close="closeDm()"
       />
     </v-expand-transition>
 
+    <!--문서 추가 버튼-->
     <v-btn id="add" class = "white--text" color = "blue-grey darken-2" @click="upload()">문서추가</v-btn>
+
+    <!--문서 추가 dialog-->
     <v-dialog v-model="dialogUpload" max-width="500px">
       <v-card>
         <v-card-title class="text-h5">문서업로드</v-card-title>
+
         <v-card-text>
           <v-file-input multiple label="File input" accept="text/*"/>
         </v-card-text>
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="closeUplode">취소</v-btn>
@@ -84,7 +103,7 @@ import DocumentCard from "@/components/DocumentCard"
 export default {
   name: "DocumentList",
   components: {
-    DocumentCard
+    DocumentCard,
   },
   data() {
     return {
@@ -102,7 +121,7 @@ export default {
         {
           text: '이름',
           align: 'center',
-          width: 'fill-width',
+          width: '20vw',
           value: 'name'
         },
         {
@@ -212,6 +231,7 @@ export default {
     openDm(item) {
       this.dmItem = Object.assign({}, item)
       this.showDm = true
+      this.$emit('dmItem', this.dmItem)
     },
     closeDm() {
       this.showDm = false
@@ -221,23 +241,17 @@ export default {
 </script>
 
 <style scoped>
-.nameTable{
-  max-width: 1px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.td{
-  align: center;
+.tableName{
+  max-width: 20vw;
 }
 .v-sheet{
   position: relative;
 }
 .cardDm{
   position: absolute;
-  width: 90%; height: 74vh;
-  left: 50%; top: 50%;
-  margin-left: -45%; margin-top: -37vh;
+  left: 0; top: 0;
+  width: 100%;
+  z-index: 100;
 }
 #add{
   position: absolute;

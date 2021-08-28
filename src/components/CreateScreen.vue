@@ -1,6 +1,7 @@
 <template>
-  <v-layout class="fill-height" column height="90vh">
-    <v-flex id="sentenceBox" class="white" style="height: 15%">
+  <v-layout class="fill-height d-flex flex-column ma-0" column>
+    <!--문장추천 창-->
+    <v-flex id="sentenceBox" class="white" style="flex: 0 0 auto; height: 20%">
       <v-btn id="sentencebotton"
              class="cyan darken-2 grey--text text--lighten-4 text-wrap text-h6 rounded-xl py-2"
              outlined
@@ -12,73 +13,40 @@
         {{ sentence }}
       </v-btn>
     </v-flex>
-    <v-flex class="d-flex align-center my-2">
-      <v-toolbar color="#9E9E9E" dense rounded="xl">
-        <v-row justify="start">
-          <v-menu
-              v-for="menuitem in menuitems"
-              :key="menuitem.name"
-              rounded="br-xl"
-              offset-y
-              open-on-hover
-          >
-            <template v-slot:activator="{ attrs, on }">
-              <v-btn
-                  class="white--text ma-2 text-body-1"
-                  v-bind="attrs"
-                  v-on="on"
-                  color="#9E9E9E"
-                  text
-              >
-                {{ menuitem.name }}
-              </v-btn>
-            </template>
 
-            <v-list>
-              <v-list-item
-                  v-for="contant in menuitem.contants"
-                  :key="contant"
-                  link
-              >
-                <v-list-item-title v-text="contant"></v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-row>
-
-        <v-spacer></v-spacer>
-        <v-btn class = "white--text" color = "blue-grey darken-2" @click="sentenceShow">문장표시</v-btn>
-      </v-toolbar>
+    <!--에디터 창-->
+    <v-flex style="flex: 1 1 auto">
+      <tiptap-editor class="fill-height mt-2" @stshow="sentenceShow()" :menubar="true" :button="true"/>
     </v-flex>
-    <v-flex >
-      <v-textarea
-          v-model="content"
-          height=66vh
-          counter
-          label="작성화면"
-          no-resize
-          background-color="white"
-          color="grey lighten-2"
-          outlined
-      ></v-textarea>
+
+    <!--저장버튼 창-->
+    <v-flex class="mt-auto mb-2" style="flex: 0 0 auto">
       <v-btn class = "white--text" color = "blue-grey darken-2"
              style="float: right; margin-right:10px;"
              @click="save"
       >외부저장</v-btn>
+
       <v-btn class = "white--text" color = "blue-grey darken-2"
              style="float: right; margin-right:10px;"
              @click="save"
       >클라우드저장</v-btn>
+
+      <!--버튼 클릭시 dialog(저장) 표시-->
       <v-dialog v-model="dialogSave" max-width="500px">
         <v-card>
           <v-card-title class="text-h5">문서저장</v-card-title>
+
+          <!--저장할 때 필수 입력 사항 / 없으면 error-->
           <v-card-text>
-            <v-text-field v-model="noteName" placeholder="제목을 입력하세요"/>
+            <v-text-field
+                :rules = "[rules.required, rules.title_min, rules.title_max]"
+                placeholder="제목을 입력하세요"/>
           </v-card-text>
+
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="closeSave">취소</v-btn>
-            <v-btn color="blue darken-1" text @click="documentSave({noteName, content})">저장</v-btn>
+            <v-btn color="blue darken-1" text>저장</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
@@ -88,16 +56,21 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-
+import TiptapEditor from "@/components/TiptapEditor"
 export default {
   name: "DocumentList",
+  components: {
+    TiptapEditor,
+  },
   data() {
     return {
-      content:'',
-      noteName:'',
       show: false,
       dialogSave: false,
+      rules: {
+        required: value => !!value || '입력이 필요합니다.',
+        title_min : v => v.length >= 1 || '최소 1자 이상이어야 합니다.',
+        title_max : v => v.length <= 35 || '최대 35자 이하이어야 합니다.',
+      },
       sentences: [
         "여기에 추천 문장이 표시됩니다.",
         "'단어추천'버튼을 누르거나 특정 키를 누르는 것으로 표시 할 수 있습니다.",
@@ -131,24 +104,33 @@ export default {
       ]
     }
   },
-
   watch: {
     dialogSave (val) {
       val || this.closeDelete()
     }
   },
-
   methods: {
-    ...mapActions(["documentSave"]),
-
     sentenceShow() {
       this.show = !this.show;
     },
-
+    fnAddProc() {
+      this.form = {
+        board_code: this.board_code,
+        subject: this.subject,
+        cont: this.cont,
+        id: this.id
+      }
+      this.$axios.post('',this.form).then((res)=>{
+        if(res.data.success) {
+          alert('클라우드에 저장 했습니다.');
+        } else {
+          alert('클라우드 저장에 실패했습니다.');
+        }
+      })
+    },
     save() {
       this.dialogSave = true
     },
-
     closeSave() {
       this.dialogSave = false
     }

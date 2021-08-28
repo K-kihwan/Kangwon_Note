@@ -7,13 +7,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        userInfo: null,
-        userId: null,
         isLogin : false,
         isLoginError: false,
         isRegister: false,
         isRegError : false,
-        chk : false
+        isSaveNote : false
     },
 
     mutations: {
@@ -41,10 +39,10 @@ export default new Vuex.Store({
             state.isRegError = false
         },
         chksave(state){
-            state.chk = true
+            state.isSaveNote = true
         },
         chksave_fail(state){
-            state.chk = false
+            state.isSaveNote = false
         }
     },
 
