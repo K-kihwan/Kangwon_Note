@@ -23,7 +23,7 @@
     </v-card-title>
 
     <!--문서 내용 / 수정 버튼으로 수정 가능하게 변경-->
-    <v-card-text class="dmText black--text px-8 mt-5 text-body-1 text-left">
+    <v-card-text class="dmText black--text px-8 mt-5 text-body-1">
       <tiptap-editor :description="contents" v-bind="editorItems"/>
     </v-card-text>
 
@@ -45,16 +45,7 @@
 import TiptapEditor from "@/components/TiptapEditor"
 export default {
   name: "DocumentCard",
-  props: {
-    name: {
-      type: String,
-      default: '문서이름',
-    },
-    contents: {
-      type: String,
-      default: '내용없음',
-    },
-  },
+  props: ["name", "contents"],
   components: {
     TiptapEditor
   },
@@ -63,7 +54,7 @@ export default {
       contentTrans: true,
       editorItems: {
         menubar: false,
-        button: false,
+        swbutton: false,
         editable: false
       },
     }

@@ -1,3 +1,4 @@
+
 <template>
   <v-sheet class="fill-height" rounded="xl" color="white">
     <!--문서 목록 테이블-->
@@ -41,16 +42,16 @@
       </template>
 
       <!--문서 이름 항목 / 누르면 문서 표시(DocumentCard) / 툴팁 적용-->
-      <template v-slot:item.name="{ item }">
+      <template v-slot:item.noteName="{ item }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <span class="d-inline-block text-truncate" v-on="on" @click="openDm(item)" :title="item.name"
+            <span class="d-inline-block text-truncate" v-on="on" @click="openDm(item)" :title="item.noteName"
                   style="cursor: pointer; max-width: 20vw">
-              {{ item.name }}
+              {{ item.noteName }}
             </span>
           </template>
           <!--툴팁으로 표시될 내용-->
-          <span>{{ item.name }}</span>
+          <span>{{ item.noteName }}</span>
         </v-tooltip>
       </template>
 
@@ -69,8 +70,8 @@
     <v-expand-transition v-if="showDm">
       <document-card
           class="cardDm transition-fast-in-fast-out fill-height"
-          :name="dmItem.name"
-          :contents="dmItem.contents"
+          :name="dmItem.noteName"
+          :contents="dmItem.content"
           @close="closeDm()"
       />
     </v-expand-transition>
@@ -100,6 +101,8 @@
 
 <script>
 import DocumentCard from "@/components/DocumentCard"
+import axios from "axios";
+
 export default {
   name: "DocumentList",
   components: {
@@ -116,19 +119,19 @@ export default {
           text: '추가순서',
           align: 'start',
           width: 100,
-          value: 'number'
+          value: 'order'
         },
         {
           text: '이름',
           align: 'center',
           width: '20vw',
-          value: 'name'
+          value: 'noteName'
         },
         {
           text: '수정일',
           align: 'center',
           width: 110,
-          value: 'date'
+          value: 'modifiedAt'
         },
         {
           text: '',
@@ -141,20 +144,20 @@ export default {
       items: [],
       editedIndex: -1,
       editedItem: {
-        number: 0,
-        name: '',
-        date: '',
-        contents: ''
+        order: 0,
+        noteName: '',
+        modifiedAt: '',
+        content: ''
       },
       defaultItem: {
-        number: 0,
-        name: '',
-        date: '',
-        contents: ''
+        order: 0,
+        noteName: '',
+        modifiedAt: '',
+        content: ''
       },
       dmItem: {
-        name: '문서이름',
-        contents: '내용없음'
+        noteName: '문서이름',
+        content: '내용없음'
       },
     }
   },
@@ -163,54 +166,49 @@ export default {
       val || this.closeDelete()
     },
     dialogUpload (val) {
-      val || this.closeDelete()
+      val || this.closeUplode()
     }
   },
 
-  created () {
-    this.initialize()
+  mounted() {
+    this.getNote()
   },
 
   methods: {
-    initialize () {
-      this.items = [
-        {
-          number: 2,
-          name: '문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서문서1문서문서문서문서문서문서문서문서문서문서문서문서',
-          date: '2021-07-12',
-          contents: '1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다1번문서입니다'
-        },
-        {
-          number: 1,
-          name: '문서2',
-          date: '2021-07-06',
-          contents: '2번문서입니다2번문서입니다2번문서입니다2번문서입니다2번문서입니다2번문서입니다2번문서입니다2번문서입니다2번문서입니다2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222'
-        },
-        {
-          number: 3,
-          name: '문서3',
-          date: '2021-06-30',
-          contents: '3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다3번문서입니다'
-        },
-        {
-          number: 4,
-          name: '문서4',
-          date: '2021-06-21',
-          contents: '4번문서입니다4번문서입니다4번문서입니다4번문서입니다4번문서입니다4번문서입니다4번문서입니다4번문서입니다4번문서입니다4번문서입니다4444444444444444444444444444444444444444444444444444444444444444444444444444444'
-        },
-        {
-          number: 5,
-          name: '문서5',
-          date: '2021-07-01',
-          contents: '5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다5번문서입니다'
-        }
-      ]
+    //노트 불러오기 axios
+    getNote(){
+      let uid = localStorage.getItem("uid")
+      axios
+          .get(`http://localhost:3000/note/${uid}`)
+          .then(res=>{
+            console.log(res)
+            this.items=res.data.notes
+          })
+          .catch(err=>{
+            console.log(err)
+          })
     },
+
+    //문서 삭제 axios
+    /*deleteNote(id){
+      axios
+      .delete(`http://localhost:3000/note/`, id)
+      .then(res=>{
+        console.log(res)
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },*/
+
     deleteItem (item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
+      /*let id = this.items.notes.id
+      this.deleteNote(id)*/
     },
+
     deleteItemConfirm () {
       this.items.splice(this.editedIndex, 1)
       this.closeDelete()
@@ -231,7 +229,6 @@ export default {
     openDm(item) {
       this.dmItem = Object.assign({}, item)
       this.showDm = true
-      this.$emit('dmItem', this.dmItem)
     },
     closeDm() {
       this.showDm = false

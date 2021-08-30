@@ -13,8 +13,5 @@ new Vue({
   router,
   store,
   vuetify,
-  beforeCreate() {
-    this.$store.dispatch("memberCheck")
-  },
   render: h => h(App)
 }).$mount('#app')

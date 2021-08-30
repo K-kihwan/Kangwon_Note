@@ -50,25 +50,4 @@ export default {
 </script>
 
 <style scoped>
-.fill-height{
-  max-width: none;
-  display: block;
-}
-.inputBox{
-  position: relative;
-  margin: 0 auto;
-  overflow: hidden;
-}
-.itemBox{
-  position: absolute;
-  top:10px; bottom:10px;
-}
-#left {
-  left: 10px; right: 52%;
-  border: 3px solid black;
-  border-radius: 20px;
-}
-#right {
-  right: 10px; left: 52%;
-}
 </style>

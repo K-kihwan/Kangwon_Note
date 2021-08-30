@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from 'vuex'
 import router from '../router'
 import axios from "axios";
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex)
 
@@ -51,8 +52,8 @@ export default new Vuex.Store({
             axios
                 .post("http://localhost:3000/auth/signin", text)
                 .then(res=>{
-                    /*let token = res.data.accessToken
-                    localStorage.setItem("access_token", token)*/
+                    let token = res.data.accessToken
+                    localStorage.setItem("access_token", token)
 
                     let userId = res.data.user.id
                     localStorage.setItem("uid", userId)
@@ -97,7 +98,7 @@ export default new Vuex.Store({
             let token = localStorage.getItem("access_token")
             let config = {
                 headers:{
-                    "access-token" : token
+                    "Authorization" : token
                 }
             }
             axios
@@ -141,13 +142,13 @@ export default new Vuex.Store({
                 })
         },
 
-        documentSave({commit}, text){
+        /*documentSave({commit}, text){
             let uid = localStorage.getItem("uid")
-            let order = "1"
+            let order = 1
             let config = {
                 "userId" : uid,
                 "noteName" : text.noteName,
-                "content" : text.content,
+                "content" : text.contents,
                 "order" : order
             }
             axios
@@ -162,7 +163,7 @@ export default new Vuex.Store({
                     commit('chksave_fail')
                     alert("저장 실패했습니다.")
                 })
-        },
+        },*/
 
         test(){
             router.push({
@@ -175,10 +176,11 @@ export default new Vuex.Store({
                 .catch(err=>{
                     console.log(err)
                 })*/
-        }
+        },
     },
     getters: {
 
     },
 
+    plugins: [createPersistedState()],
 })
