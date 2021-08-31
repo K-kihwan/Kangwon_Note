@@ -159,6 +159,9 @@ export default {
         noteName: '문서이름',
         content: '내용없음'
       },
+      getId:{
+        id : 0
+      }
     }
   },
   watch: {
@@ -183,6 +186,8 @@ export default {
           .then(res=>{
             console.log(res)
             this.items=res.data.notes
+            let note_order = res.data.notes[this.items.length-1].order
+            localStorage.setItem("noteOrder", note_order)
           })
           .catch(err=>{
             console.log(err)
@@ -205,8 +210,6 @@ export default {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
-      /*let id = this.items.notes.id
-      this.deleteNote(id)*/
     },
 
     deleteItemConfirm () {

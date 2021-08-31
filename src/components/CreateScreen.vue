@@ -92,12 +92,13 @@ export default {
   methods: {
     documentSave(text){
       let uid = localStorage.getItem("uid")
-      let order = 1
+      let order = localStorage.getItem("noteOrder")
+      let newOrder = parseInt(order) + 1
       let config = {
         "userId" : uid,
         "noteName" : text.noteName,
         "content" : text.contents,
-        "order" : order
+        "order" : newOrder
       }
       axios
           .post("http://localhost:3000/note", config)
