@@ -3,9 +3,45 @@
     <template v-for="(item, index) in items">
       <div class="divider" v-if="item.type === 'divider'" :key="`divider${index}`" />
 
-      <!-- 해당하는 메뉴버튼 아이콘으로 -->
-      <button v-else :key="index"
+      <!--텍스트 색상-->
+      <v-menu
+          style="width:20px"
+          v-else-if="item.type === 'color'" :key="index"
+          bottom
+          offset-y
+      >
+        <template v-slot:activator="{ on, attrs }" >
+          <v-btn
               class="menuItem"
+              :title="'글자색상'"
+              fab
+              text
+              elevation="0"
+              v-bind="attrs"
+              v-on="on"
+          >
+            <svg class="remix">
+              <use :xlink:href="`${remixiconUrl}#ri-${'font-color'}`" :fill="color"/>
+            </svg>
+          </v-btn>
+        </template>
+
+        <v-color-picker
+          dot-size="20"
+          hide-inputs
+          swatches-max-height="200"
+          elevation="15"
+          v-model="color"
+          @input="editor.chain().focus().setColor(color).run()"
+        ></v-color-picker>
+      </v-menu>
+
+      <!-- 해당하는 메뉴버튼 아이콘으로 -->
+      <v-btn v-else :key="index"
+              class="menuItem"
+              fab
+              text
+              elevation="0"
               :class="{ 'is-active': isActive ? item.isActive(): '' }"
               @click="item.action()"
               :title="item.title"
@@ -13,7 +49,7 @@
         <svg class="remix">
           <use :xlink:href="`${remixiconUrl}#ri-${item.icon}`" />
         </svg>
-      </button>
+      </v-btn>
     </template>
 
     <v-spacer/>
@@ -29,6 +65,7 @@
 
 <script>
 import remixiconUrl from 'remixicon/fonts/remixicon.symbol.svg'
+
 export default {
   name: "EditorMenubar",
   props: ["editor", "swbutton"],
@@ -36,7 +73,14 @@ export default {
     return {
       remixiconUrl,
       isActive: null,
+      color: '',
       items: [
+        {
+          icon: 'font-size',
+          title: '글자 크기',
+          action: () => this.editor.chain().focus().toggleHeading({level: 1}).run(),
+          isActive: () => this.editor.isActive('heading', {level: 1}),
+        },
         {
           icon: 'bold',
           title: '굵게',
@@ -50,10 +94,19 @@ export default {
           isActive: () => this.editor.isActive('italic'),
         },
         {
+          icon: 'underline',
+          title: '밑줄',
+          action: () => this.editor.chain().focus().toggleUnderline().run(),
+          isActive: () => this.editor.isActive('underline'),
+        },
+        {
           icon: 'strikethrough',
           title: '취소선',
           action: () => this.editor.chain().focus().toggleStrike().run(),
           isActive: () => this.editor.isActive('strike'),
+        },
+        {
+          type: 'color',
         },
         {
           icon: 'mark-pen-line',
@@ -63,18 +116,6 @@ export default {
         },
         {
           type: 'divider',
-        },
-        {
-          icon: 'h-1',
-          title: 'Heading 1',
-          action: () => this.editor.chain().focus().toggleHeading({level: 1}).run(),
-          isActive: () => this.editor.isActive('heading', {level: 1}),
-        },
-        {
-          icon: 'h-2',
-          title: 'Heading 2',
-          action: () => this.editor.chain().focus().toggleHeading({level: 2}).run(),
-          isActive: () => this.editor.isActive('heading', {level: 2}),
         },
         {
           icon: 'align-left',
@@ -116,18 +157,9 @@ export default {
           type: 'divider',
         },
         {
-          icon: 'double-quotes-l',
-          title: 'Blockquote',
-          action: () => this.editor.chain().focus().toggleBlockquote().run(),
-          isActive: () => this.editor.isActive('blockquote'),
-        },
-        {
           icon: 'separator',
           title: 'Horizontal Rule',
           action: () => this.editor.chain().focus().setHorizontalRule().run(),
-        },
-        {
-          type: 'divider',
         },
         {
           icon: 'text-wrap',
@@ -156,9 +188,17 @@ export default {
           title: '재실행',
           action: () => this.editor.chain().focus().redo().run(),
         },
+        {
+          type: 'divider',
+        },
+        {
+          icon: 'delete-bin-6-line',
+          title: '전체삭제',
+          action: () => this.editor.commands.clearContent(),
+        },
       ],
     }
-  }
+  },
 }
 </script>
 
@@ -171,8 +211,8 @@ export default {
   margin-right: 0.75rem;
 }
 .menuItem {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   color: #0D0D0D;
   border: none;
   background-color: transparent;
@@ -185,8 +225,8 @@ export default {
   background-color: #0D0D0D;
 }
 .remix {
-  width: 100%;
-  height: 100%;
+  width: 1.5em;
+  height: 1.5em;
   fill: currentColor;
 }
 </style>

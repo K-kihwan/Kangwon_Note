@@ -9,12 +9,19 @@
 
 <script>
 import { Editor, EditorContent } from '@tiptap/vue-2'
+import EditorMenubar from "@/components/EditorMenubar";
 import StarterKit from '@tiptap/starter-kit';
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
 import Highlight from '@tiptap/extension-highlight'
+import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
-import EditorMenubar from "@/components/EditorMenubar";
+import Text from '@tiptap/extension-text'
+import TextStyle from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import FontFamily from '@tiptap/extension-font-family'
+import Typography from '@tiptap/extension-typography'
+
 export default {
   name: "TiptapEditor",
   props: ["description", "swbutton", "editable", "menubar"],
@@ -32,12 +39,18 @@ export default {
       editable: this.editable,
       extensions: [
         StarterKit,
+        Underline,
         Highlight,
         TaskList,
         TaskItem,
+        Text,
+        TextStyle,
+        Color,
+        FontFamily,
         TextAlign.configure({
           types: ['heading', 'paragraph'],
         }),
+        Typography
       ],
       content: this.description,
     });

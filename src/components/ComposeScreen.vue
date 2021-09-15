@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <v-app-bar
         app
+        dense
         color="white"
     >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
