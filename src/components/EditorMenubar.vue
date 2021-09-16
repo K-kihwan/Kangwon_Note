@@ -4,37 +4,12 @@
       <div class="divider" v-if="item.type === 'divider'" :key="`divider${index}`" />
 
       <!--텍스트 색상-->
-      <v-menu
-          style="width:20px"
-          v-else-if="item.type === 'color'" :key="index"
-          bottom
-          offset-y
-      >
-        <template v-slot:activator="{ on, attrs }" >
-          <v-btn
-              class="menuItem"
-              :title="'글자색상'"
-              fab
-              text
-              elevation="0"
-              v-bind="attrs"
-              v-on="on"
-          >
-            <svg class="remix">
-              <use :xlink:href="`${remixiconUrl}#ri-${'font-color'}`" :fill="color"/>
-            </svg>
-          </v-btn>
-        </template>
-
-        <v-color-picker
-          dot-size="20"
-          hide-inputs
-          swatches-max-height="200"
-          elevation="15"
-          v-model="color"
-          @input="editor.chain().focus().setColor(color).run()"
-        ></v-color-picker>
-      </v-menu>
+      <editor-fontcolor v-else-if="item.type === 'color'" :key="index"
+                        :editor="editor" :remixiconUrl="remixiconUrl"
+                        :title="item.title"
+                        :iconName="item.icon"
+                        :btnName="item.btnName"
+      />
 
       <!-- 해당하는 메뉴버튼 아이콘으로 -->
       <v-btn v-else :key="index"
@@ -65,10 +40,14 @@
 
 <script>
 import remixiconUrl from 'remixicon/fonts/remixicon.symbol.svg'
+import EditorFontcolor from "@/components/EditorFontcolor";
 
 export default {
   name: "EditorMenubar",
   props: ["editor", "swbutton"],
+  components: {
+    EditorFontcolor
+  },
   data() {
     return {
       remixiconUrl,
@@ -89,7 +68,7 @@ export default {
         },
         {
           icon: 'italic',
-          title: '기울기',
+          title: '기울임',
           action: () => this.editor.chain().focus().toggleItalic().run(),
           isActive: () => this.editor.isActive('italic'),
         },
@@ -107,12 +86,15 @@ export default {
         },
         {
           type: 'color',
+          icon: 'font-color',
+          title: '글자색상',
+          btnName: 'font',
         },
         {
+          type: 'color',
           icon: 'mark-pen-line',
           title: '하이라이트',
-          action: () => this.editor.chain().focus().toggleHighlight().run(),
-          isActive: () => this.editor.isActive('highlight'),
+          btnName: 'highlight',
         },
         {
           type: 'divider',
@@ -137,13 +119,13 @@ export default {
         },
         {
           icon: 'list-unordered',
-          title: 'Bullet List',
+          title: '글머리 기호',
           action: () => this.editor.chain().focus().toggleBulletList().run(),
           isActive: () => this.editor.isActive('bulletList'),
         },
         {
           icon: 'list-ordered',
-          title: 'Ordered List',
+          title: '번호 매기기',
           action: () => this.editor.chain().focus().toggleOrderedList().run(),
           isActive: () => this.editor.isActive('orderedList'),
         },
@@ -168,7 +150,7 @@ export default {
         },
         {
           icon: 'format-clear',
-          title: '스타일 없애기',
+          title: '서식 지우기',
           action: () => this.editor.chain()
               .focus()
               .clearNodes()

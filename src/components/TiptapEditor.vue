@@ -40,7 +40,7 @@ export default {
       extensions: [
         StarterKit,
         Underline,
-        Highlight,
+        Highlight.configure({ multicolor: true }),
         TaskList,
         TaskItem,
         Text,
