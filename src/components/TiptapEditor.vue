@@ -50,7 +50,7 @@ export default {
         TextAlign.configure({
           types: ['heading', 'paragraph'],
         }),
-        Typography
+        Typography,
       ],
       content: this.description,
     });

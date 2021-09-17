@@ -3,8 +3,12 @@
     <template v-for="(item, index) in items">
       <div class="divider" v-if="item.type === 'divider'" :key="`divider${index}`" />
 
-      <!--텍스트 색상-->
-      <editor-fontcolor v-else-if="item.type === 'color'" :key="index"
+      <editor-fontsize v-else-if="item.type === 'fontSize'" :key="index"
+                       :editor="editor" :remixiconUrl="remixiconUrl"
+      />
+
+      <!--폰트&배경 색상 변경 버튼-->
+      <editor-fontcolor v-else-if="item.type === 'Color'" :key="index"
                         :editor="editor" :remixiconUrl="remixiconUrl"
                         :title="item.title"
                         :iconName="item.icon"
@@ -41,12 +45,15 @@
 <script>
 import remixiconUrl from 'remixicon/fonts/remixicon.symbol.svg'
 import EditorFontcolor from "@/components/EditorFontcolor";
+import EditorFontsize from "@/components/EditorFontsize";
+
 
 export default {
   name: "EditorMenubar",
   props: ["editor", "swbutton"],
   components: {
-    EditorFontcolor
+    EditorFontcolor,
+    EditorFontsize
   },
   data() {
     return {
@@ -55,10 +62,7 @@ export default {
       color: '',
       items: [
         {
-          icon: 'font-size',
-          title: '글자 크기',
-          action: () => this.editor.chain().focus().toggleHeading({level: 1}).run(),
-          isActive: () => this.editor.isActive('heading', {level: 1}),
+          type: 'fontSize',
         },
         {
           icon: 'bold',
@@ -85,13 +89,13 @@ export default {
           isActive: () => this.editor.isActive('strike'),
         },
         {
-          type: 'color',
+          type: 'Color',
           icon: 'font-color',
           title: '글자색상',
-          btnName: 'font',
+          btnName: 'fontcolor',
         },
         {
-          type: 'color',
+          type: 'Color',
           icon: 'mark-pen-line',
           title: '하이라이트',
           btnName: 'highlight',

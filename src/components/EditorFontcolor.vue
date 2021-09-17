@@ -5,17 +5,31 @@
       offset-y
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn
-          class="menuItem"
-          :title=title
-          fab
-          text
-          elevation="0"
-          v-bind="attrs"
-          v-on="on"
+      <v-btn v-if="btnName == 'fontcolor'"
+             class="menuItem"
+             :title=title
+             fab
+             text
+             elevation="0"
+             v-bind="attrs"
+             v-on="on"
       >
         <svg class="remix">
           <use :xlink:href="`${remixiconUrl}#ri-${iconName}`" :fill="editor.getAttributes('textStyle').color"/>
+        </svg>
+      </v-btn>
+
+      <v-btn v-else-if="btnName === 'highlight'"
+             class="menuItem"
+             :title=title
+             fab
+             text
+             elevation="0"
+             v-bind="attrs"
+             v-on="on"
+      >
+        <svg class="remix">
+          <use :xlink:href="`${remixiconUrl}#ri-${iconName}`" :fill="editor.getAttributes('highlight').color"/>
         </svg>
       </v-btn>
     </template>
@@ -39,12 +53,18 @@ export default {
   props: ["editor", "remixiconUrl", "iconName", "title", "btnName"],
   data() {
     return {
+      isActive: null,
       color: '',
+    }
+  },
+  watch: {
+    color() {
+      return this.editor.getAttributes('textStyle').color
     }
   },
   methods: {
     divideType: function (btnName) {
-      if (btnName == 'font') {
+      if (btnName == 'fontcolor') {
         return this.editor.chain().focus().setColor(this.color).run()
       }
       else if (btnName == 'highlight') {
