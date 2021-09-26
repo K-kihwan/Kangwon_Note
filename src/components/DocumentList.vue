@@ -187,6 +187,10 @@ export default {
             console.log(res)
             this.items=res.data.notes
             let note_order = res.data.notes[this.items.length-1].order
+            if(note_order == null)
+            {
+              note_order = "0"
+            }
             localStorage.setItem("noteOrder", note_order)
           })
           .catch(err=>{

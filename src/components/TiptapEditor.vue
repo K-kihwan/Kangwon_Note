@@ -37,6 +37,10 @@ export default {
   mounted() {
     this.editor = new Editor({
       editable: this.editable,
+      content: this.description,
+      onUpdate: () => {
+        this.$emit('update:description', this.editor.getHTML())
+      },
       extensions: [
         StarterKit,
         Underline,
@@ -52,13 +56,21 @@ export default {
         }),
         Typography,
       ],
-      content: this.description,
     });
   },
-  beforeDestroy() {
-    this.editor.destroy();
+  beforeUnmount() {
+    this.editor.destroy()
   },
   watch: {
+    description(value) {
+      const isSame = this.editor.getHTML() === value
+
+      if (isSame) {
+        return
+      }
+
+      this.editor.commands.setContent(value, false)
+    },
     editable() {
       this.editor.setEditable(this.editable)
     },

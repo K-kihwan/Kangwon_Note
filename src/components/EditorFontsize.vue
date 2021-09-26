@@ -18,8 +18,9 @@
       </v-btn>
     </template>
 
+    <!-- 폰트 크기 리스트-->
     <v-list>
-      <v-list-item :class="{ 'is-active': isActive ? editor.isActive('heading', { : index+1 }): '' }"
+      <v-list-item
                    v-for="(size, index) in sizeOption" :key="index"
                    @click="editor.chain().focus().toggleHeading({ level: index+1 }).run()"
       >

@@ -16,7 +16,9 @@
 
     <!--에디터 창-->
     <v-flex style="flex: 1 1 auto">
-      <tiptap-editor  class="fill-height mt-2" @stshow="sentenceShow()" :menubar="true" :swbutton="true"/>
+      <tiptap-editor class="fill-height mt-2" @stshow="sentenceShow()" :menubar="true" :swbutton="true"
+                      :description.sync="contents"
+      />
     </v-flex>
 
     <!--저장버튼 창-->
@@ -60,7 +62,6 @@
 import TiptapEditor from "@/components/TiptapEditor"
 import axios from "axios";
 
-
 export default {
   name: "DocumentList",
   components: {
@@ -68,7 +69,7 @@ export default {
   },
   data() {
     return {
-      contents:'',
+      contents:"",
       noteName: '',
       show: false,
       dialogSave: false,

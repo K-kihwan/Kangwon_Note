@@ -5,6 +5,7 @@
       offset-y
   >
     <template v-slot:activator="{ on, attrs }">
+      <!-- 폰트 색상 -->
       <v-btn v-if="btnName == 'fontcolor'"
              class="menuItem"
              :title=title
@@ -19,6 +20,7 @@
         </svg>
       </v-btn>
 
+      <!-- 하이라이트 색상 -->
       <v-btn v-else-if="btnName === 'highlight'"
              class="menuItem"
              :title=title

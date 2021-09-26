@@ -3,6 +3,7 @@
     <template v-for="(item, index) in items">
       <div class="divider" v-if="item.type === 'divider'" :key="`divider${index}`" />
 
+      <!--폰트 크기 변경 버튼-->
       <editor-fontsize v-else-if="item.type === 'fontSize'" :key="index"
                        :editor="editor" :remixiconUrl="remixiconUrl"
       />
