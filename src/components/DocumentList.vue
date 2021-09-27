@@ -1,15 +1,17 @@
 
 <template>
-  <v-sheet class="fill-height" rounded="xl" color="white">
+  <v-sheet class="fill-height elevation-6 rounded-xl d-flex flex-column" color="white">
     <!--문서 목록 테이블-->
     <v-data-table
         :headers="headers"
         :items="items"
         :search="search"
+        :page.sync="page"
+        :items-per-page="itemsPerPage"
         sort-by="number"
-        class="elevation-6 rounded-xl"
         hide-default-footer
-        style="height: 90vh; "
+        @page-count="pageCount = $event"
+        style="flex: 1 1 auto"
     >
       <template v-slot:top>
         <v-toolbar flat color="#9E9E9E" class="white--text">
@@ -76,8 +78,15 @@
       />
     </v-expand-transition>
 
-    <!--문서 추가 버튼-->
-    <v-btn id="add" class = "white--text" color = "blue-grey darken-2" @click="upload()">문서추가</v-btn>
+    <div class="text-center ma-2">
+      <v-pagination
+          v-model="page"
+          :length="pageCount"
+      ></v-pagination>
+
+      <!--문서 추가 버튼-->
+      <v-btn class = "white--text" color = "blue-grey darken-2" @click="upload()">문서추가</v-btn>
+    </div>
 
     <!--문서 추가 dialog-->
     <v-dialog v-model="dialogUpload" max-width="500px">
@@ -111,6 +120,9 @@ export default {
   data() {
     return {
       search: '',
+      page: 1,
+      pageCount: 0,
+      itemsPerPage: 0,
       dialogDelete: false,
       dialogUpload: false,
       showDm: false,
@@ -170,7 +182,12 @@ export default {
     },
     dialogUpload (val) {
       val || this.closeUplode()
-    }
+    },
+  },
+
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
   },
 
   mounted() {
@@ -240,14 +257,14 @@ export default {
     closeDm() {
       this.showDm = false
     },
+    handleResize() {
+      this.itemsPerPage = (window.innerHeight*0.9-200)/48;
+    }
   }
 }
 </script>
 
 <style scoped>
-.tableName{
-  max-width: 20vw;
-}
 .v-sheet{
   position: relative;
 }
@@ -256,10 +273,5 @@ export default {
   left: 0; top: 0;
   width: 100%;
   z-index: 100;
-}
-#add{
-  position: absolute;
-  bottom: 20px;
-  margin-left: -47px;
 }
 </style>

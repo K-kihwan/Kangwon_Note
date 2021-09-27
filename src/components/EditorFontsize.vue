@@ -6,6 +6,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
           class="menuItem"
+          :title=title
           fab
           text
           elevation="0"
@@ -34,20 +35,13 @@
 
 export default {
   name: "EditorFontsize",
-  props: ["editor", "remixiconUrl",],
+  props: ["editor", "remixiconUrl","title"],
   data() {
     return {
       isActive: null,
       fontSize: '',
       sizeOption: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
     }
-  },
-  watch: {
-    fontSize() {
-    }
-  },
-  methods: {
-
   },
 }
 </script>

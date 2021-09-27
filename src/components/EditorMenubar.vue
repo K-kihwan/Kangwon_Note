@@ -6,6 +6,7 @@
       <!--폰트 크기 변경 버튼-->
       <editor-fontsize v-else-if="item.type === 'fontSize'" :key="index"
                        :editor="editor" :remixiconUrl="remixiconUrl"
+                       :title="item.title"
       />
 
       <!--폰트&배경 색상 변경 버튼-->
@@ -14,6 +15,12 @@
                         :title="item.title"
                         :iconName="item.icon"
                         :btnName="item.btnName"
+      />
+
+      <!--정렬 변경 버튼-->
+      <editor-align v-else-if="item.type === 'Align'" :key="index"
+                    :editor="editor" :remixiconUrl="remixiconUrl"
+                    :title="item.title"
       />
 
       <!-- 해당하는 메뉴버튼 아이콘으로 -->
@@ -47,14 +54,15 @@
 import remixiconUrl from 'remixicon/fonts/remixicon.symbol.svg'
 import EditorFontcolor from "@/components/EditorFontcolor";
 import EditorFontsize from "@/components/EditorFontsize";
-
+import EditorAlign from "@/components/EditorAlign";
 
 export default {
   name: "EditorMenubar",
   props: ["editor", "swbutton"],
   components: {
     EditorFontcolor,
-    EditorFontsize
+    EditorFontsize,
+    EditorAlign,
   },
   data() {
     return {
@@ -64,6 +72,7 @@ export default {
       items: [
         {
           type: 'fontSize',
+          title: '글자크기',
         },
         {
           icon: 'bold',
@@ -105,22 +114,8 @@ export default {
           type: 'divider',
         },
         {
-          icon: 'align-left',
-          title: '좌정렬',
-          action: () => this.editor.chain().focus().setTextAlign('left').run(),
-          isActive: () => this.editor.isActive({ textAlign: 'left' }),
-        },
-        {
-          icon: 'align-center',
-          title: '가운데정렬',
-          action: () => this.editor.chain().focus().setTextAlign('center').run(),
-          isActive: () => this.editor.isActive({ textAlign: 'center' }),
-        },
-        {
-          icon: 'align-right',
-          title: '우정렬',
-          action: () => this.editor.chain().focus().setTextAlign('right').run(),
-          isActive: () => this.editor.isActive({ textAlign: 'right' }),
+          type: 'Align',
+          title: '정렬',
         },
         {
           icon: 'list-unordered',
@@ -147,11 +142,6 @@ export default {
           icon: 'separator',
           title: 'Horizontal Rule',
           action: () => this.editor.chain().focus().setHorizontalRule().run(),
-        },
-        {
-          icon: 'text-wrap',
-          title: 'Hard Break',
-          action: () => this.editor.chain().focus().setHardBreak().run(),
         },
         {
           icon: 'format-clear',

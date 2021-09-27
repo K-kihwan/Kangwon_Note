@@ -59,11 +59,6 @@ export default {
       color: '',
     }
   },
-  watch: {
-    color() {
-      return this.editor.getAttributes('textStyle').color
-    }
-  },
   methods: {
     divideType: function (btnName) {
       if (btnName == 'fontcolor') {

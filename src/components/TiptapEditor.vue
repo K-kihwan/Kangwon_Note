@@ -98,7 +98,7 @@ export default {
   align-items: center;
   flex: 0 0 auto;
   flex-wrap: wrap;
-  padding: 0.25rem;
+  padding: 0.25rem 1rem;
   border-bottom: 3px solid #E0E0E0;
 }
 .edContent {

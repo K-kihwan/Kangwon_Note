@@ -22,7 +22,7 @@
     </v-flex>
 
     <!--저장버튼 창-->
-    <v-flex class="mt-auto mb-2" style="flex: 0 0 auto">
+    <v-flex class="mt-4 mb-2" style="flex: 0 0 auto">
       <v-btn class = "white--text" color = "blue-grey darken-2"
              style="float: right; margin-right:10px;"
              @click="save"

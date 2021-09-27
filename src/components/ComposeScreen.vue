@@ -21,11 +21,11 @@
         <v-row>
 
           <v-col>
-            <document-list/>
+            <document-list style="height: 90vh"/>
           </v-col>
 
           <v-col>
-            <create-screen/>
+            <create-screen style="height: 90vh"/>
           </v-col>
 
         </v-row>
