@@ -35,7 +35,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete">아니오</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">예</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteNote">예</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -159,21 +159,21 @@ export default {
         order: 0,
         noteName: '',
         modifiedAt: '',
-        content: ''
+        content: '',
+        id: 0
       },
       defaultItem: {
         order: 0,
         noteName: '',
         modifiedAt: '',
-        content: ''
+        content: '',
+        id: 0
       },
       dmItem: {
         noteName: '문서이름',
-        content: '내용없음'
+        content: '내용없음',
+        id: 0
       },
-      getId:{
-        id : 0
-      }
     }
   },
   watch: {
@@ -215,28 +215,30 @@ export default {
           })
     },
 
-    //문서 삭제 axios
-    /*deleteNote(id){
+    //노트 삭제
+    deleteNote(){
+      let deleteId = localStorage.getItem("deleteNoteId")
       axios
-      .delete(`http://localhost:3000/note/`, id)
-      .then(res=>{
-        console.log(res)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-    },*/
+          .delete(`http://localhost:3000/note/${deleteId}`)
+          .then(res=>{
+            console.log(res)
+            this.items.splice(this.editedIndex, 1)
+            this.closeDelete()
+          })
+          .catch(err=>{
+            console.log(err)
+            alert("err!")
+          })
+    },
 
     deleteItem (item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
+      let deleteNoteId = this.editedItem.id
+      localStorage.setItem("deleteNoteId", deleteNoteId)
     },
 
-    deleteItemConfirm () {
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
     closeDelete () {
       this.dialogDelete = false
       this.$nextTick(() => {
@@ -253,6 +255,8 @@ export default {
     openDm(item) {
       this.dmItem = Object.assign({}, item)
       this.showDm = true
+      let dmNoteId = this.dmItem.id
+      localStorage.setItem("dmNoteId", dmNoteId)
     },
     closeDm() {
       this.showDm = false

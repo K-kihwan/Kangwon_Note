@@ -19,7 +19,6 @@
       </v-btn>
     </template>
 
-    <!-- 폰트 크기 리스트-->
     <v-list>
       <v-list-item
                    v-for="(size, index) in sizeOption" :key="index"

@@ -142,29 +142,6 @@ export default new Vuex.Store({
                 })
         },
 
-        /*documentSave({commit}, text){
-            let uid = localStorage.getItem("uid")
-            let order = 1
-            let config = {
-                "userId" : uid,
-                "noteName" : text.noteName,
-                "content" : text.contents,
-                "order" : order
-            }
-            axios
-                .post("http://localhost:3000/note", config)
-                .then(res=>{
-                    console.log(res)
-                    commit('chksave')
-                    alert("저장 완료 되었습니다.")
-                })
-                .catch(err=>{
-                    console.log(err)
-                    commit('chksave_fail')
-                    alert("저장 실패했습니다.")
-                })
-        },*/
-
         test(){
             router.push({
                 name:'ComposeScreen'

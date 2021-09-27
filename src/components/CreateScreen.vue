@@ -17,7 +17,7 @@
     <!--에디터 창-->
     <v-flex style="flex: 1 1 auto">
       <tiptap-editor class="fill-height mt-2" @stshow="sentenceShow()" :menubar="true" :swbutton="true"
-                      :description.sync="contents"
+                     :description.sync="contents"
       />
     </v-flex>
 
@@ -71,6 +71,7 @@ export default {
     return {
       contents:"",
       noteName: '',
+      word:'test',
       show: false,
       dialogSave: false,
       rules: {
@@ -78,11 +79,9 @@ export default {
         title_min : v => v.length >= 1 || '최소 1자 이상이어야 합니다.',
         title_max : v => v.length <= 35 || '최대 35자 이하이어야 합니다.',
       },
-      sentences: [
-        "여기에 추천 문장이 표시됩니다.",
-        "'단어추천'버튼을 누르거나 특정 키를 누르는 것으로 표시 할 수 있습니다.",
-        "역사학자들은 수니파와 시아파가 오늘날 반목하는 이유를 설명하기 위해 노력해왔다. 많은 이들은 갈등의 원인이 오랜 종교적 차이에 있다고 주장한다. 하지만 1300년 동안 두 종족이 갈등한 역사의 모든 사회적, 경제적, 문화적 요인까지 고려해야 한다."
-      ],
+
+      sentences: []
+      ,
     }
   },
   watch: {
@@ -91,6 +90,7 @@ export default {
     }
   },
   methods: {
+    //문서저장
     documentSave(text){
       let uid = localStorage.getItem("uid")
       let order = localStorage.getItem("noteOrder")
@@ -112,6 +112,25 @@ export default {
           .catch(err=>{
             console.log(err)
             alert("저장 실패했습니다.")
+          })
+    },
+
+    //문장 추천
+    sentenceRecommend(word){
+      let uid = localStorage.getItem("uid")
+      let config = {
+        "userId" : uid,
+        "word" : word
+      }
+      axios
+          .post("http://localhost:3000/note/get-sentences", config)
+          .then(res=>{
+            console.log(res)
+            this.sentences=res.data.sentences
+          })
+          .catch(err=>{
+            console.log(err)
+            alert("오류 발생!")
           })
     },
 

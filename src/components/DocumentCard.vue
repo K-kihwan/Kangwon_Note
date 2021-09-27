@@ -24,7 +24,7 @@
 
     <!--문서 내용 / 수정 버튼으로 수정 가능하게 변경-->
     <v-card-text class="dmText black--text px-8 mt-5 text-body-1">
-      <tiptap-editor :description="contents" v-bind="editorItems"/>
+      <tiptap-editor :description.sync="contents" v-bind="editorItems"/>
     </v-card-text>
 
     <v-spacer></v-spacer>
@@ -34,7 +34,7 @@
       <v-btn class="transbtn white--text" color="blue-grey darken-2" v-if="contentTrans" @click="transItem()">
         수정
       </v-btn>
-      <v-btn class="transbtn white--text" color="blue-grey darken-2" v-else @click="transItemCommit()">
+      <v-btn class="transbtn white--text" color="blue-grey darken-2" v-else @click="transItemCommit({name, contents})">
         수정완료
       </v-btn>
     </v-card-actions>
@@ -43,6 +43,8 @@
 
 <script>
 import TiptapEditor from "@/components/TiptapEditor"
+import axios from "axios";
+
 export default {
   name: "DocumentCard",
   props: ["name", "contents"],
@@ -65,10 +67,29 @@ export default {
       this.editorItems.editable = true
       this.editorItems.menubar = true
     },
-    transItemCommit() {
-      this.contentTrans = true
-      this.editorItems.editable = false
-      this.editorItems.menubar = false
+
+    //문서 수정
+    transItemCommit(text) {
+      let modifyNoteId = localStorage.getItem("dmNoteId")
+      let config = {
+        "noteId" : modifyNoteId,
+        "noteName" : text.name,
+        "content" : text.contents
+      }
+      axios
+          .patch("http://localhost:3000/note", config)
+          .then(res=>{
+            console.log(res)
+            this.contentTrans = true
+            this.editorItems.editable = false
+            this.editorItems.menubar = false
+            //이건 수정할 화률이 높음 아마도
+            window.location.reload()
+          })
+          .catch(err=>{
+            console.log(err)
+            alert("저장 실패했습니다.")
+          })
     }
   }
 }
