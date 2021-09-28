@@ -79,6 +79,7 @@
     </v-expand-transition>
 
     <div class="text-center ma-2">
+      <!--페이지 표시-->
       <v-pagination
           v-model="page"
           :length="pageCount"
