@@ -118,6 +118,7 @@ export default new Vuex.Store({
 
         logout({commit}){
             commit('logout')
+            window.localStorage.clear()
             alert("로그아웃 되었습니다.")
             router.push({
                 name:'Login'

@@ -29,10 +29,10 @@
           ></v-text-field>
 
           <!--문서 삭제 dialog-->
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5">목록에서 지우시겠습니까?</v-card-title>
-              <v-card-actions>
+          <v-dialog v-model="dialogDelete" max-width="500px" @keydown.enter.prevent="deleteNote">
+            <v-card >
+              <v-card-title class="text-h5" >목록에서 지우시겠습니까?</v-card-title>
+              <v-card-actions >
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete">아니오</v-btn>
                 <v-btn color="blue darken-1" text @click="deleteNote">예</v-btn>
@@ -89,7 +89,7 @@
     </div>
 
     <!--문서 추가 dialog-->
-    <v-dialog v-model="dialogUpload" max-width="500px">
+    <v-dialog v-model="dialogUpload" max-width="500px" >
       <v-card>
         <v-card-title class="text-h5">문서업로드</v-card-title>
 
@@ -203,7 +203,8 @@ export default {
           .then(res=>{
             console.log(res)
             this.items=res.data.notes
-            let note_order = res.data.notes[this.items.length-1].order
+            /*let note_order = res.data.notes[this.items.length-1].order*/
+            let note_order = this.items.length
             if(note_order == null)
             {
               note_order = "0"
@@ -224,6 +225,7 @@ export default {
             console.log(res)
             this.items.splice(this.editedIndex, 1)
             this.closeDelete()
+            window.location.reload()
           })
           .catch(err=>{
             console.log(err)

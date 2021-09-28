@@ -34,7 +34,7 @@
       >클라우드저장</v-btn>
 
       <!--버튼 클릭시 dialog(저장) 표시-->
-      <v-dialog v-model="dialogSave" max-width="500px">
+      <v-dialog v-model="dialogSave" max-width="500px" @keydown.enter.prevent="documentSave({noteName, contents})">
         <v-card>
           <v-card-title class="text-h5">문서저장</v-card-title>
 
