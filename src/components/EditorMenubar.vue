@@ -114,6 +114,20 @@ export default {
           type: 'divider',
         },
         {
+          icon: 'link',
+          title: '링크',
+          action: () => this.setLink,
+          isActive: () => this.editor.isActive('link'),
+        },
+        {
+          icon: 'image-add-line',
+          title: '이미지삽입',
+          action: () => this.addImage
+        },
+        {
+          type: 'divider',
+        },
+        {
           type: 'Align',
           title: '정렬',
         },
@@ -175,6 +189,44 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    setLink() {
+      const previousUrl = this.editor.getAttributes('link').href
+      const url = window.prompt('URL', previousUrl)
+
+      // cancelled
+      if (url === null) {
+        return
+      }
+
+      // empty
+      if (url === '') {
+        this.editor
+            .chain()
+            .focus()
+            .extendMarkRange('link')
+            .unsetLink()
+            .run()
+
+        return
+      }
+
+      // update link
+      this.editor
+          .chain()
+          .focus()
+          .extendMarkRange('link')
+          .setLink({ href: url })
+          .run()
+    },
+    addImage() {
+      const url = window.prompt('URL')
+
+      if (url) {
+        this.editor.chain().focus().setImage({ src: url }).run()
+      }
+    },
   },
 }
 </script>

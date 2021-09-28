@@ -21,6 +21,8 @@ import TextStyle from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
 import FontFamily from '@tiptap/extension-font-family'
 import Typography from '@tiptap/extension-typography'
+import Link from '@tiptap/extension-link'
+import Image from '@tiptap/extension-image'
 
 export default {
   name: "TiptapEditor",
@@ -55,6 +57,10 @@ export default {
           types: ['heading', 'paragraph'],
         }),
         Typography,
+        Link.configure({
+          openOnClick: false,
+        }),
+        Image,
       ],
     });
   },
