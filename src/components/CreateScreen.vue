@@ -16,9 +16,16 @@
 
     <!--에디터 창-->
     <v-flex style="flex: 1 1 auto">
-      <tiptap-editor class="fill-height mt-2" @stshow="sentenceShow()" :menubar="true" :swbutton="true"
+      <tiptap-editor class="fill-height mt-2" @stshow="sentenceRecommend" :menubar="true" :swbutton="true"
                      :description.sync="contents"
       />
+      <v-dialog v-model="sample" max-width="500px">
+        <v-card>
+          <v-card-text>
+            {{ test }}
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-flex>
 
     <!--저장버튼 창-->
@@ -73,6 +80,8 @@ export default {
       noteName: '',
       word:'test',
       show: false,
+      sample: false,
+      test: "",
       dialogSave: false,
       rules: {
         required: value => !!value || '입력이 필요합니다.',
@@ -80,8 +89,7 @@ export default {
         title_max : v => v.length <= 35 || '최대 35자 이하이어야 합니다.',
       },
 
-      sentences: []
-      ,
+      sentences: [],
     }
   },
   watch: {
@@ -127,6 +135,7 @@ export default {
           .then(res=>{
             console.log(res)
             this.sentences=res.data.sentences
+            this.show = !this.show
           })
           .catch(err=>{
             console.log(err)
@@ -134,8 +143,11 @@ export default {
           })
     },
 
-    sentenceShow() {
-      this.show = !this.show;
+    sentenceShow(args) {
+      this.test = args
+
+      this.show = !this.show
+      this.sample = !this.sample
     },
     save() {
       this.dialogSave = true

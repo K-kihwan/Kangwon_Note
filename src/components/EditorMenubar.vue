@@ -38,15 +38,6 @@
         </svg>
       </v-btn>
     </template>
-
-    <v-spacer/>
-
-    <!-- 문장추천 버튼 -->
-    <v-btn class="white--text" color="blue-grey darken-2"
-           v-if="swbutton" @click="$emit('stshow')"
-    >
-      문장추천
-    </v-btn>
   </div>
 </template>
 
@@ -58,7 +49,7 @@ import EditorAlign from "@/components/EditorAlign";
 
 export default {
   name: "EditorMenubar",
-  props: ["editor", "swbutton"],
+  props: ["editor",],
   components: {
     EditorFontcolor,
     EditorFontsize,

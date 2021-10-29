@@ -1,14 +1,29 @@
 <template>
   <div class="editor text-left">
-    <!-- 에디터 메뉴바 선택적으로 표시 (상위 컴포넌트에서 menubar,button = false||true 명시) -->
-    <editor-menubar class="edHeader" v-if="swmenubar" :editor="editor" @stshow="$emit('stshow')" :swbutton="swbutton"/>
+    <!-- 에디터 메뉴바 선택적으로 표시 (상위 컴포넌트에서 menubar = false||true 명시) -->
+    <editor-menubar class="edHeader" v-if="swmenubar" :editor="editor"/>
+
+    <!-- 문장추천 버블메뉴 (상위 컴포넌트에서 swbutton = false||true 명시)  -->
+    <bubble-menu class="edBubble rounded-pill mb-n1" :editor="editor" v-if="swbutton">
+      <v-btn class="menuItem rounded-pill"
+             @click="$emit('stshow', test)"
+             text plain small elevation="0"
+      >
+        문장추천
+      </v-btn>
+      <v-btn class="menuItem rounded-pill"
+             text plain small elevation="0"
+      >
+        {{ test }}
+      </v-btn>
+    </bubble-menu>
 
     <editor-content class="edContent" :editor="editor"/>
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-2'
+import { Editor, EditorContent, BubbleMenu  } from '@tiptap/vue-2'
 import EditorMenubar from "@/components/EditorMenubar";
 import StarterKit from '@tiptap/starter-kit';
 import TaskList from '@tiptap/extension-task-list'
@@ -26,10 +41,11 @@ import Image from '@tiptap/extension-image'
 
 export default {
   name: "TiptapEditor",
-  props: ["description", "swbutton", "editable", "menubar"],
+  props: ["description", "swbutton", "editable", "menubar",],
   components: {
     EditorContent,
-    EditorMenubar
+    EditorMenubar,
+    BubbleMenu,
   },
   data() {
     return {
@@ -84,8 +100,14 @@ export default {
   computed: {
     swmenubar: function () {
       return this.menubar
+    },
+    test: function () {
+      const { view, state } = this.editor
+      const { from, to } = view.state.selection
+
+      return state.doc.textBetween(from, to, '')
     }
-  }
+  },
 }
 </script>
 
@@ -107,12 +129,27 @@ export default {
   padding: 0.25rem 1rem;
   border-bottom: 3px solid #E0E0E0;
 }
+.edBubble {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  padding: 0.25rem;
+  background-color: rgba(0, 0, 0, 0.75);
+}
 .edContent {
   padding: 1rem;
   flex: 1 1 auto;
   word-break: break-all;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+.menuItem {
+  color: #FFF;
+  background-color: transparent;
+}
+.menuItem:hover {
+  background-color: #0D0D0D;
 }
 ::-webkit-scrollbar{
   width: 5px;
