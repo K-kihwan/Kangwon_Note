@@ -19,13 +19,6 @@
       <tiptap-editor class="fill-height mt-2" @stshow="sentenceRecommend" :menubar="true" :swbutton="true"
                      :description.sync="contents"
       />
-      <v-dialog v-model="sample" max-width="500px">
-        <v-card>
-          <v-card-text>
-            {{ test }}
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </v-flex>
 
     <!--저장버튼 창-->
@@ -80,8 +73,6 @@ export default {
       noteName: '',
       word:'test',
       show: false,
-      sample: false,
-      test: "",
       dialogSave: false,
       rules: {
         required: value => !!value || '입력이 필요합니다.',
@@ -143,12 +134,6 @@ export default {
           })
     },
 
-    sentenceShow(args) {
-      this.test = args
-
-      this.show = !this.show
-      this.sample = !this.sample
-    },
     save() {
       this.dialogSave = true
     },

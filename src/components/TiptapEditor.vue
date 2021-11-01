@@ -6,15 +6,10 @@
     <!-- 문장추천 버블메뉴 (상위 컴포넌트에서 swbutton = false||true 명시)  -->
     <bubble-menu class="edBubble rounded-pill mb-n1" :editor="editor" v-if="swbutton">
       <v-btn class="menuItem rounded-pill"
-             @click="$emit('stshow', test)"
+             @click="$emit('stshow', word)"
              text plain small elevation="0"
       >
         문장추천
-      </v-btn>
-      <v-btn class="menuItem rounded-pill"
-             text plain small elevation="0"
-      >
-        {{ test }}
       </v-btn>
     </bubble-menu>
 
@@ -101,7 +96,7 @@ export default {
     swmenubar: function () {
       return this.menubar
     },
-    test: function () {
+    word: function () {
       const { view, state } = this.editor
       const { from, to } = view.state.selection
 

@@ -107,13 +107,13 @@ export default {
         {
           icon: 'link',
           title: '링크',
-          action: () => this.setLink,
+          action: () => this.setLink(),
           isActive: () => this.editor.isActive('link'),
         },
         {
           icon: 'image-add-line',
           title: '이미지삽입',
-          action: () => this.addImage
+          action: () => this.addImage()
         },
         {
           type: 'divider',
