@@ -7,7 +7,7 @@
     >
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-      <v-toolbar-title>문서작성(임시)</v-toolbar-title>
+      <v-toolbar-title>족집게 에디터</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -20,11 +20,11 @@
       <v-container>
         <v-row>
 
-          <v-col>
+          <v-col cols="6">
             <document-list style="height: 90vh"/>
           </v-col>
 
-          <v-col>
+          <v-col cols="6">
             <create-screen style="height: 90vh"/>
           </v-col>
 

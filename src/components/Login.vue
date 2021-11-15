@@ -10,7 +10,7 @@
           아이디와 비밀번호를 확인 해주세요.
         </v-alert>
 
-        <h1>문서작성 (임시)</h1>
+        <h1>족집게 에디터</h1>
         <v-text-field
             class = "mb-3"
             v-model="email"

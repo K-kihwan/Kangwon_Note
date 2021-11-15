@@ -24,19 +24,8 @@
       />
 
       <!-- 해당하는 메뉴버튼 아이콘으로 -->
-      <v-btn v-else :key="index"
-              class="menuItem"
-              fab
-              text
-              elevation="0"
-              :class="{ 'is-active': isActive ? item.isActive(): '' }"
-              @click="item.action()"
-              :title="item.title"
-      >
-        <svg class="remix">
-          <use :xlink:href="`${remixiconUrl}#ri-${item.icon}`" />
-        </svg>
-      </v-btn>
+      <editor-menu-item v-else :key="index" v-bind="item" />
+
     </template>
   </div>
 </template>
@@ -46,6 +35,7 @@ import remixiconUrl from 'remixicon/fonts/remixicon.symbol.svg'
 import EditorFontcolor from "@/components/EditorFontcolor";
 import EditorFontsize from "@/components/EditorFontsize";
 import EditorAlign from "@/components/EditorAlign";
+import EditorMenuItem from "@/components/EditorMenuItem";
 
 export default {
   name: "EditorMenubar",
@@ -54,6 +44,7 @@ export default {
     EditorFontcolor,
     EditorFontsize,
     EditorAlign,
+    EditorMenuItem,
   },
   data() {
     return {
@@ -178,6 +169,11 @@ export default {
           title: '전체삭제',
           action: () => this.editor.commands.clearContent(),
         },
+        {
+          type: 'more',
+          icon: 'more-fill',
+          title: '더보기',
+        }
       ],
     }
   },
@@ -229,24 +225,5 @@ export default {
   background-color: rgba(0,0,0, 0.1);
   margin-left: 0.5rem;
   margin-right: 0.75rem;
-}
-.menuItem {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #0D0D0D;
-  border: none;
-  background-color: transparent;
-  border-radius: 0.4rem;
-  padding: 0.25rem;
-  margin-right: 0.25rem;
-}
-.menuItem:hover {
-  color: #FFF;
-  background-color: #0D0D0D;
-}
-.remix {
-  width: 1.5em;
-  height: 1.5em;
-  fill: currentColor;
 }
 </style>
