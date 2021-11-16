@@ -47,16 +47,6 @@
         >
           회원가입
         </v-btn>
-        <v-btn
-            block
-            class = "white--text mb-3"
-            depressed
-            large
-            color = "blue-grey darken-2"
-            @click="test"
-        >
-          test
-        </v-btn>
       </v-flex>
     </v-layout>
   </v-container>
@@ -79,7 +69,7 @@ export default {
   },
 
   methods:{
-    ...mapActions(["login", "test"]),
+    ...mapActions(["login"]),
 
     goToRegister(){
       this.$router.push({

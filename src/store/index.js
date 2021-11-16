@@ -38,12 +38,6 @@ export default new Vuex.Store({
         registerSuccess(state){
             state.isRegister = true
             state.isRegError = false
-        },
-        chksave(state){
-            state.isSaveNote = true
-        },
-        chksave_fail(state){
-            state.isSaveNote = false
         }
     },
 
@@ -141,20 +135,7 @@ export default new Vuex.Store({
                     console.log(err)
                     commit("registerError")
                 })
-        },
-
-        test(){
-            router.push({
-                name:'ComposeScreen'
-            })
-            /*axios.get("http://localhost:3000/hello")
-                .then(res=>{
-                    console.log(res)
-                })
-                .catch(err=>{
-                    console.log(err)
-                })*/
-        },
+        }
     },
     getters: {
 

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import Register from "@/components/Register";
-import mainPage from "@/components/mainPage";
 import store from "../store"
 import ComposeScreen from "@/components/ComposeScreen";
 
@@ -42,15 +41,9 @@ export default new Router({
             component: Register
         },
         {
-            path: '/mainPage',
-            name: 'mainPage',
-            beforeEnter: notLogin,
-            component: mainPage
-        },
-
-        {
             path: '/ComposeScreen',
             name: 'ComposeScreen',
+            beforeEnter: notLogin,
             component: ComposeScreen
         }
     ]

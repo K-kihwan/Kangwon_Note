@@ -10,7 +10,7 @@
              :key="sentence"
              v-show="show"
       >
-        {{ sentence }}
+        {{ sentence}}
       </v-btn>
     </v-flex>
 
@@ -88,6 +88,7 @@ export default {
       val || this.closeSave()
     }
   },
+
   methods: {
     //문서저장
     documentSave(text){
